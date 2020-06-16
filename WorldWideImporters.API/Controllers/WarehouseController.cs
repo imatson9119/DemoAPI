@@ -14,13 +14,11 @@ namespace WideWorldImporters.API.Controllers
     {
         protected readonly ILogger Logger;
         protected readonly WideWorldImportersDbContext DbContext;
-        protected readonly ProductsDbContext PdbContext;
 
         public WarehouseController(ILogger<WarehouseController> logger, WideWorldImportersDbContext dbContext, ProductsDbContext pdbContext)
         {
             Logger = logger;
             DbContext = dbContext;
-            PdbContext = pdbContext;
         }
 #pragma warning restore CS1591
 
@@ -195,7 +193,7 @@ namespace WideWorldImporters.API.Controllers
             try
             {
                 // Get the "proposed" query from repository
-                var query = PdbContext.GetProducts();
+                var query = DbContext.GetProducts();
                 // Set paging values
                 response.PageSize = pageSize;
                 response.PageNumber = pageNumber;
@@ -244,7 +242,7 @@ namespace WideWorldImporters.API.Controllers
 
             try
             {
-                var existingEntity = await PdbContext
+                var existingEntity = await DbContext
                     .GetProductByProductNameAsync(new Product { Name = request.Name });
 
                 if (existingEntity != null)
@@ -257,10 +255,10 @@ namespace WideWorldImporters.API.Controllers
                 var entity = request.ToEntity();
 
                 // Add entity to repository
-                PdbContext.Add(entity);
+                DbContext.Add(entity);
 
                 // Save entity in database
-                await PdbContext.SaveChangesAsync();
+                await DbContext.SaveChangesAsync();
 
                 // Set the entity to response model
                 response.Model = entity;
@@ -300,7 +298,7 @@ namespace WideWorldImporters.API.Controllers
             try
             {
                 // Get the stock item by id
-                response.Model = await PdbContext.GetProductAsync(new Product(id));
+                response.Model = await DbContext.GetProductAsync(new Product(id));
             }
             catch (Exception ex)
             {

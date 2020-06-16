@@ -49,11 +49,11 @@ namespace WideWorldImporters.API.Models
     }
     public static class ProductsDbContextExtentions
     {
-        public static async Task<Product> GetProductAsync(this ProductsDbContext dbContext, Product entity)
+        public static async Task<Product> GetProductAsync(this WideWorldImportersDbContext dbContext, Product entity)
             => await dbContext.Products.FirstOrDefaultAsync(item => item.ID == entity.ID);
-        public static async Task<Product> GetProductByProductNameAsync(this ProductsDbContext dbContext, Product entity)
+        public static async Task<Product> GetProductByProductNameAsync(this WideWorldImportersDbContext dbContext, Product entity)
             => await dbContext.Products.FirstOrDefaultAsync(item => item.Name == entity.Name);
-        public static IQueryable<Product> GetProducts(this ProductsDbContext dbContext)
+        public static IQueryable<Product> GetProducts(this WideWorldImportersDbContext dbContext)
         {
             return dbContext.Products.AsQueryable();
         }
